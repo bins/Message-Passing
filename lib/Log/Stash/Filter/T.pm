@@ -4,8 +4,10 @@ use MooseX::Types::Moose qw/ ArrayRef /;
 use Moose::Util::TypeConstraints;
 use namespace::autoclean;
 
-with 'Log::Stash::Role::Input';
-with 'Log::Stash::Role::Output';
+with qw/
+    Log::Stash::Role::Input
+    Log::Stash::Role::Output
+/;
 
 has '+output_to' => (
     isa => ArrayRef[role_type('Log::Stash::Role::Output')],

@@ -1,5 +1,5 @@
 package Log::Stash::Role::Output;
-use Moose::Role;
+use Moo::Role;
 use JSON qw/ to_json /;
 use Scalar::Util qw/ blessed /;
 use namespace::autoclean;

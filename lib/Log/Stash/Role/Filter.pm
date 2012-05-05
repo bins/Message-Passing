@@ -1,5 +1,5 @@
 package Log::Stash::Role::Filter;
-use Moose::Role;
+use Moo::Role;
 use namespace::autoclean;
 
 requires 'filter';
@@ -20,7 +20,7 @@ sub consume {
 
 =head1 NAME
 
-Log::Stash::Mixin::Filter
+Log::Stash::Role::Filter
 
 =head1 DESCRIPTION
 

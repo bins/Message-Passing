@@ -1,16 +1,17 @@
 package Log::Stash::Role::Input;
-use Moose::Role;
+use Moo::Role;
 use JSON qw/ from_json /;
-use Log::Stash::Types;
+use Sub::Quote;
 use namespace::autoclean;
 
 sub decode { from_json( $_[1], { utf8  => 1 } ) }
 
 has output_to => (
-    isa => 'Log::Stash::Types::Output',
+    isa => quote_sub(q{ die $_[0] . "Does not have a ->consume method" unless blessed($_[0]) && $_[0]->can('consume') }),
     is => 'ro',
     required => 1,
-    coerce => 1,
+    # FIXME - We need to be able to coerce from HashRef here
+    # coerce => 1
 );
 
 1;

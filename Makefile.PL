@@ -10,6 +10,8 @@ all_from 'lib/Log/Stash.pm';
 license 'AGPL_3';
 authority 'GHENRY';
 
+requires 'Moo' => '0.091001'; # FIXME - Needs master currently, and still no works
+requires 'Sub::Quote';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';
