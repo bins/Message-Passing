@@ -2,12 +2,20 @@ package Log::Stash::Role::Input;
 use Moo::Role;
 use JSON qw/ from_json /;
 use Sub::Quote;
-use namespace::autoclean;
+use Module::Runtime ();
+use Scalar::Util ();
+use namespace::clean -except => 'meta';
 
 sub decode { from_json( $_[1], { utf8  => 1 } ) }
 
 has output_to => (
-    isa => quote_sub(q{ die $_[0] . "Does not have a ->consume method" unless blessed($_[0]) && $_[0]->can('consume') }),
+    isa => quote_sub(q{ die $_[0] . "Does not have a ->consume method" unless Scalar::Util::blessed($_[0]) && $_[0]->can('consume'); 1; }),
+    coerce => quote_sub(q{
+        my %stuff = %{$_[0]};
+        my $class = delete($stuff{class});
+        Module::Runtime::use_module($class);
+        $class->new(%stuff);
+    }),
     is => 'ro',
     required => 1,
     # FIXME - We need to be able to coerce from HashRef here

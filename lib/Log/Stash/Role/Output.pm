@@ -5,7 +5,6 @@ use Scalar::Util qw/ blessed /;
 use namespace::autoclean;
 
 has pretty => (
-    isa => 'Bool',
     default => 0,
     is => 'ro',
 );
