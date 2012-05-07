@@ -1,12 +1,9 @@
 package Log::Stash::Input::Null;
-use Moose;
-use AnyEvent;
-use Try::Tiny;
-use namespace::autoclean;
+use Moo;
+use namespace::clean -except => 'meta';
 
 with 'Log::Stash::Role::Input';
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

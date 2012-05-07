@@ -1,5 +1,6 @@
 package Log::Stash::Input::FileTail;
-use Moose;
+use Moo;
+use MooX::Types::MooseLike::Base qw/ Str /;
 use AnyEvent;
 use Try::Tiny;
 use Scalar::Util qw/ weaken /;
@@ -9,7 +10,7 @@ with 'Log::Stash::Role::Input';
 
 has filename => (
     is => 'ro',
-    isa => 'Str',
+    isa => Str,
     required => 1,
 );
 
@@ -46,7 +47,6 @@ sub BUILD {
     $self->_tail_handle;
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

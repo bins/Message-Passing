@@ -1,8 +1,8 @@
 package Log::Stash::Input::STDIN;
-use Moose;
+use Moo;
 use AnyEvent;
-use Try::Tiny;
-use namespace::autoclean;
+use Try::Tiny qw/ try catch /;
+use namespace::clean -except => 'meta';
 
 with 'Log::Stash::Role::Input';
 
@@ -20,7 +20,6 @@ sub BUILD {
     });
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME
