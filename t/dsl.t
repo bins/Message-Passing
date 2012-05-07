@@ -28,7 +28,7 @@ isa_ok $c->[0]->output_to->output_to->output_to->[0], 'Log::Stash::Output::Test'
 $c->[0]->output_to->consume({foo => 'bar'});
 my $test = $c->[0]->output_to->output_to->output_to->[0];
 is $test->message_count, 1;
-is_deeply [$test->messages], [{foo => 'bar'}];
+is_deeply $test->messages, [{foo => 'bar'}];
 
 $c = log_chain {
             output logcollector_central => (

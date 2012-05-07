@@ -5,11 +5,8 @@ use namespace::clean -except => 'meta';
 
 extends 'Log::Stash::Output::Callback';
 
-has '+cb' => (
-    default => sub { sub {} },
-);
-
 has messages => (
+    is => 'ro',
     isa => ArrayRef,
     default => sub { [] },
 #    traits => ['Array'],
@@ -22,15 +19,13 @@ has messages => (
     lazy => 1,
 );
 
-sub messages { @{$_[0]->{messages}} }
 sub consume_test { push(@{$_[0]->{messages}}, $_[1]) }
-sub message_count { scalar  @{$_[0]->{messages}} }
+sub message_count { scalar @{$_[0]->messages} }
 
 after consume => sub {
     shift()->consume_test(@_);
 };
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

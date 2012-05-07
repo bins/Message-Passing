@@ -20,7 +20,7 @@ my $chain = $i->build_chain;
 my $output = $chain->[0]->output_to;
 $output->consume({ foo => "bar" });
 
-is_deeply [$output->output_to->messages], [{ foo => "bar" }];
+is_deeply $output->output_to->messages, [{ foo => "bar" }];
 
 done_testing;
 

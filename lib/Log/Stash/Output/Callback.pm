@@ -6,6 +6,7 @@ use namespace::clean -except => 'meta';
 has cb => (
     isa => CodeRef,
     is => 'ro',
+    default => sub { sub {} },
 );
 
 sub consume {
