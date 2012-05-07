@@ -1,6 +1,6 @@
 package Log::Stash::Role::Filter;
 use Moo::Role;
-use namespace::autoclean;
+use namespace::clean -except => 'meta';
 
 requires 'filter';
 

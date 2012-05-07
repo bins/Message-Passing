@@ -2,9 +2,11 @@ package Log::Stash::Role::Output;
 use Moo::Role;
 use JSON qw/ to_json /;
 use Scalar::Util qw/ blessed /;
-use namespace::autoclean;
+use MooX::Types::MooseLike::Base qw/ Bool /;
+use namespace::clean -except => 'meta';
 
 has pretty => (
+    isa => Bool,
     default => 0,
     is => 'ro',
 );

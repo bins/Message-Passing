@@ -1,16 +1,16 @@
 package Log::Stash::Role::Script;
-use Moose::Role;
+use Moo::Role;
 use Getopt::Long qw(:config pass_through);
 use POSIX qw(setuid setgid);
-use Moose::Util::TypeConstraints;
 use Log::Stash::DSL;
+use MooX::Types::MooseLike::Base qw/ Bool /;
 use namespace::autoclean;
 
 requires 'build_chain';
 
 has daemonize => (
     is => 'ro',
-    isa => 'Bool',
+    isa => Bool,
     default => 0,
 );
 
@@ -60,7 +60,7 @@ foreach my $name (qw/ user pid_file /) {
 }
 
 has io_priority => (
-    isa => enum([qw[ none be rt idle ]]),
+    isa => sub { /^(none|be|rt|idle)$/ },
     is => 'ro',
     predicate => "_has_io_priority",
 );

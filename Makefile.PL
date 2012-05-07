@@ -12,6 +12,7 @@ authority 'GHENRY';
 
 requires 'Moo' => '0.091004';
 requires 'Sub::Quote';
+requires 'MooX::Types::MooseLike';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';
