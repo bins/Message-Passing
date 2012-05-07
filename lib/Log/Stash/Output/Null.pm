@@ -1,12 +1,11 @@
 package Log::Stash::Output::Null;
-use Moose;
-use namespace::autoclean;
+use Moo;
+use namespace::clean -except => 'meta';
 
 with 'Log::Stash::Role::Output';
 
 sub consume {}
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

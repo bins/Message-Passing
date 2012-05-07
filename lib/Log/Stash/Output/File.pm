@@ -1,11 +1,12 @@
 package Log::Stash::Output::File;
-use Moose;
-use namespace::autoclean;
+use Moo;
+use MooX::Types::MooseLike::Base qw/ Str Bool /;
+use namespace::clean -except => 'meta';
 
 with 'Log::Stash::Role::Output';
 
 has filename => (
-    isa => 'Str',
+    isa => Str,
     is => 'ro',
     predicate => '_has_filename',
 );
@@ -18,7 +19,7 @@ has fh => (
 
 has append => (
     is => 'ro',
-    isa => 'Bool',
+    isa => Bool,
     default => 1,
 );
 
@@ -45,7 +46,6 @@ sub consume {
     return 1;
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

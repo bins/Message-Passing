@@ -1,6 +1,7 @@
 package Log::Stash::Output::Test;
-use Moose;
-use namespace::autoclean;
+use Moo;
+use MooX::Types::MooseLike::Base qw/ ArrayRef /;
+use namespace::clean -except => 'meta';
 
 extends 'Log::Stash::Output::Callback';
 
@@ -9,17 +10,21 @@ has '+cb' => (
 );
 
 has messages => (
-    isa => 'ArrayRef',
+    isa => ArrayRef,
     default => sub { [] },
-    traits => ['Array'],
-    handles => {
-        consume_test => 'push',
-        message_count => 'count',
-        messages => 'elements',
-    },
+#    traits => ['Array'],
+#    handles => {
+#        consume_test => 'push',
+#        message_count => 'count',
+#        messages => 'elements',
+#    },
     clearer => 'clear_messages',
     lazy => 1,
 );
+
+sub messages { @{$_[0]->{messages}} }
+sub consume_test { push(@{$_[0]->{messages}}, $_[1]) }
+sub message_count { scalar  @{$_[0]->{messages}} }
 
 after consume => sub {
     shift()->consume_test(@_);
