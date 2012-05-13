@@ -10,17 +10,15 @@ sub decode { from_json( $_[1], { utf8  => 1 } ) }
 
 has output_to => (
     isa => quote_sub(q{ die $_[0] . "Does not have a ->consume method" unless Scalar::Util::blessed($_[0]) && $_[0]->can('consume'); }),
-    coerce => quote_sub(q{
+    coerce => sub {
         return $_[0] if Scalar::Util::blessed($_[0]) && $_[0]->can('consume');
         my %stuff = %{$_[0]};
         my $class = delete($stuff{class});
         Module::Runtime::use_module($class);
         $class->new(%stuff);
-    }),
+    },
     is => 'ro',
     required => 1,
-    # FIXME - We need to be able to coerce from HashRef here
-    # coerce => 1
 );
 
 1;
