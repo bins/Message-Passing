@@ -1,8 +1,9 @@
 package Log::Stash::Filter::Delay;
-use Moose;
+use Moo;
+use MooX::Types::MooseLike::Base qw/ Num /;
 use AnyEvent;
 use Scalar::Util qw/ weaken /;
-use namespace::autoclean;
+use namespace::clean -except => 'meta';
 
 with qw/
     Log::Stash::Role::Input
@@ -10,7 +11,7 @@ with qw/
 /;
 
 has delay_for => (
-    isa => 'Num',
+    isa => Num,
     is => 'ro',
     required => 1,
 );
@@ -27,7 +28,6 @@ sub consume {
     );
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

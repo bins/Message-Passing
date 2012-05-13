@@ -1,26 +1,29 @@
 package Log::Stash::Filter::Key;
-use Moose;
-use Moose::Util::TypeConstraints;
-use namespace::autoclean;
+use Moo;
+use Sub::Quote;
+use MooX::Types::MooseLike::Base qw/ Str /;
+use namespace::clean -except => 'meta';
 
 with 'Log::Stash::Role::Filter';
 
 has key => (
-    isa => 'Str',
+    isa => Str,
     is => 'ro',
     required => 1,
 );
 
 has match => (
-    isa => 'Str',
+    isa => Str,
     is => 'ro',
     required => 1,
 );
 
 has match_type => (
     is => 'ro',
-    isa => enum(['regex', 'eq']),
-    default => 'eq',
+    isa => sub {
+        $_[0] =~ /^(regex|eq)$/i;
+    },
+    default => sub { 'eq' },
 );
 
 has _re => (
@@ -51,7 +54,6 @@ sub filter {
     return $message;
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME
