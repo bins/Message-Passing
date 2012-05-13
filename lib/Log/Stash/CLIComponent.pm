@@ -3,7 +3,7 @@ use strict;
 use warnings;
 use Import::Into;
 use Carp qw/ confess /;
-use Moo ();
+use MooX::Options ();
 use namespace::clean;
 
 sub import {
@@ -17,8 +17,8 @@ sub import {
     confess("Must have a name") unless $name;
     my $default = $opts{default} || '';
     my $injected_moo = 0;
-    if (!$target->can('has')) {
-        Moo->import::into($target);
+    if (!$target->can('option')) {
+        MooX::Options->import::into($target);
         $injected_moo = 1;
     }
     my $code = qq{
@@ -26,26 +26,28 @@ sub import {
         use MooX::Types::MooseLike::Base qw/ Str /;
         use JSON ();
         package $target;
-        has $name => (
+        option $name => (
             isa => Str,
             is => 'rw',
             required => '$default' ? 0 : 1,
             '$default' ? ( default => sub { '$default' } ) : (),
+            format => 's',
         );
-        has "${name}_options" => (
+        option "${name}_options" => (
             default => sub { {} },
             is => 'ro',
             coerce => sub {
                 return \$_[0] if ref(\$_[0]);
                 JSON->new->relaxed->decode(\$_[0]);
             },
+            format => 's',
         );
     };
     #warn $code;
     eval $code;
     die $@ if $@;
     if ($injected_moo) {
-        Moo->unimport::out_of($target);
+        MooX::Options->unimport::out_of($target);
     }
 }
 

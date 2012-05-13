@@ -7,8 +7,6 @@ use Log::Stash::Utils qw/ expand_class_name /;
 use Module::Runtime ();
 use 5.8.4;
 
-with 'MooseX::Getopt';
-
 our $VERSION = '0.002';
 $VERSION = eval $VERSION;
 

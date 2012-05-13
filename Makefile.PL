@@ -19,7 +19,7 @@ requires 'namespace::clean';
 requires 'AnyEvent';
 requires 'String::RewritePrefix';
 requires 'JSON';
-requires 'MooseX::Getopt';
+requires 'MooX::Options';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
 requires 'List::MoreUtils';
