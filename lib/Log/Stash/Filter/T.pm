@@ -1,19 +1,33 @@
 package Log::Stash::Filter::T;
-use Moose;
-use MooseX::Types::Moose qw/ ArrayRef /;
-use Moose::Util::TypeConstraints;
+use Moo;
+use List::MoreUtils qw/ all /;
+use Scalar::Util qw/ blessed /;
 use namespace::autoclean;
 
-with qw/
-    Log::Stash::Role::Input
-    Log::Stash::Role::Output
-/;
-
-has '+output_to' => (
-    isa => ArrayRef[role_type('Log::Stash::Role::Output')],
+has 'output_to' => (
+    isa => sub {
+        ref($_[0]) eq 'ARRAY' and all { $_->can('output_to') } @{$_[0]};
+    },
+    coerce => sub {
+        [ map {
+            if (ref($_) eq 'HASH') {
+                my %stuff = %{$_};
+                my $class = delete($stuff{class});
+                Module::Runtime::use_module($class);
+                $class->new(%stuff);
+            }
+            else {
+                $_
+            }
+         } @{ $_[0] } ];
+    },
     is => 'ro',
     required => 1,
 );
+
+with qw/
+    Log::Stash::Role::Output
+/;
 
 sub consume {
     my ($self, $message) = @_;
@@ -22,7 +36,6 @@ sub consume {
     }
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

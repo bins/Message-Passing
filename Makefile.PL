@@ -27,6 +27,7 @@ requires 'JSON::XS';
 requires 'MooseX::Getopt';
 requires 'Try::Tiny';
 requires 'Task::Weaken';
+requires 'List::MoreUtils';
 
 install_script 'script/logstash';
 
