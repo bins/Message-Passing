@@ -1,15 +1,8 @@
 package Log::Stash::DSL::Factory;
 use Moose;
-use String::RewritePrefix;
 use namespace::autoclean;
 
-sub expand_class_name {
-    my ($self, $type, $name) = @_;
-    String::RewritePrefix->rewrite({
-        '' => 'Log::Stash::' . $type . '::',
-        '+' => ''
-    }, $name);
-}
+use Log::Stash::Utils qw/ expand_class_name /;
 
 has registry => (
     isa => 'HashRef',
@@ -56,7 +49,7 @@ sub make {
             $opts{output_to} = $proper_output_to;
         }
     }
-    $class = $self->expand_class_name($type, $class);
+    $class = expand_class_name($type, $class);
     Class::MOP::load_class($class);
     my $out = $class->new(%opts);
     $self->registry_set($name, $out);

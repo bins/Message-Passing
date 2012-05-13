@@ -1,16 +1,13 @@
 package Log::Stash::DSL;
-
-use Moose ();
-use Moose::Exporter;
 use Log::Stash::DSL::Factory;
 use Carp qw/ confess /;
 use Scalar::Util qw/weaken/;
 use AnyEvent;
-use Moose::Util qw/ does_role /;
+use Exporter qw/ import unimport /;
 
-Moose::Exporter->setup_import_methods(
-    as_is     => [qw/ run_log_server log_chain input filter output /],
-);
+our @EXPORT = qw/
+    run_log_server log_chain input filter output
+/;
 
 our $FACTORY;
 sub _check_factory {

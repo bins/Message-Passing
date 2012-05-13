@@ -12,12 +12,12 @@ my $i = Log::Stash->new(
     output_options => '{"x":"m"}',
 );
 
-is_deeply {$i->input_options}, {"foo" => "bar"};
-is_deeply {$i->filter_options}, {"baz" => "quux"};
-is_deeply {$i->output_options}, {"x" => "m"};
+is_deeply $i->input_options, {"foo" => "bar"};
+is_deeply $i->filter_options, {"baz" => "quux"};
+is_deeply $i->output_options, {"x" => "m"};
 
 my $chain = $i->build_chain;
-my $output = $chain->[0]->output_to;
+my $output = $chain->output_to;
 $output->consume({ foo => "bar" });
 
 is_deeply $output->output_to->messages, [{ foo => "bar" }];

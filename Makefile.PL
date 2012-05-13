@@ -11,8 +11,11 @@ license 'AGPL_3';
 authority 'GHENRY';
 
 requires 'Moo' => '0.091004';
+requires 'Import::Into' => '1.001000';
 requires 'Sub::Quote';
 requires 'MooX::Types::MooseLike';
+requires 'Module::Runtime'
+requires 'namespace::clean';
 requires 'Moose';
 requires 'namespace::autoclean';
 requires 'AnyEvent';

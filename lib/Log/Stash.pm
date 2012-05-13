@@ -1,43 +1,37 @@
 package Log::Stash;
-use Moose;
+use Moo;
 use JSON::XS;
 use Getopt::Long qw(:config pass_through);
-use namespace::autoclean;
+use namespace::clean -except => 'meta';
+use Log::Stash::Utils qw/ expand_class_name /;
+use Module::Runtime ();
 use 5.8.4;
 
-use Log::Stash::DSL;
-
-with
-    'MooseX::Getopt',
-    'Log::Stash::Role::CLIComponent' => { name => 'input' },
-    'Log::Stash::Role::CLIComponent' => { name => 'output' },
-    'Log::Stash::Role::CLIComponent' => { name => 'filter', default => 'Null' },
-    'Log::Stash::Role::Script';
+with 'MooseX::Getopt';
 
 our $VERSION = '0.002';
 $VERSION = eval $VERSION;
 
 sub build_chain {
     my $self = shift;
-        log_chain {
-            output out => (
-                $self->output_options,
-                class => $self->output,
-            );
-            filter filter => (
-                $self->filter_options,
-                class => $self->filter,
-                output_to => 'out',
-            );
-            input in => (
-                $self->input_options,
-                class => $self->input,
-                output_to => 'filter',
-            );
-        };
+    use Data::Dumper;
+    my $input_class = expand_class_name('Input', $self->input);
+    my $output_class = expand_class_name('Output', $self->output);
+    my $filter_class = expand_class_name('Filter', $self->filter);
+    Module::Runtime::use_module($input_class);
+    Module::Runtime::use_module($output_class);
+    Module::Runtime::use_module($filter_class);
+    $input_class->new(%{$self->input_options}, output_to =>
+        $filter_class->new(%{$self->filter_options}, output_to =>
+            $output_class->new(%{$self->output_options})
+        )
+    );
 }
 
-__PACKAGE__->meta->make_immutable;
+use Log::Stash::CLIComponent (name => 'input');
+use Log::Stash::CLIComponent (name => 'output');
+use Log::Stash::CLIComponent (name => 'filter', default => 'Null');
+
 1;
 
 =head1 NAME
