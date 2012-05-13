@@ -2,7 +2,7 @@ package Log::Stash::Filter::T;
 use Moo;
 use List::MoreUtils qw/ all /;
 use Scalar::Util qw/ blessed /;
-use namespace::autoclean;
+use namespace::clean -except => 'meta';
 
 has 'output_to' => (
     isa => sub {

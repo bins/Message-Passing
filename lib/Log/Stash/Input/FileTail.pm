@@ -4,7 +4,7 @@ use MooX::Types::MooseLike::Base qw/ Str /;
 use AnyEvent;
 use Try::Tiny;
 use Scalar::Util qw/ weaken /;
-use namespace::autoclean;
+use namespace::clean -except => 'meta';
 
 with 'Log::Stash::Role::Input';
 

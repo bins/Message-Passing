@@ -1,6 +1,6 @@
 package Log::Stash;
 use Moo;
-use JSON::XS;
+use JSON ();
 use Getopt::Long qw(:config pass_through);
 use namespace::clean -except => 'meta';
 use Log::Stash::Utils qw/ expand_class_name /;
