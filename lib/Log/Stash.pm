@@ -10,6 +10,10 @@ use 5.8.4;
 our $VERSION = '0.002';
 $VERSION = eval $VERSION;
 
+use Log::Stash::CLIComponent (name => 'input');
+use Log::Stash::CLIComponent (name => 'output');
+use Log::Stash::CLIComponent (name => 'filter', default => 'Null');
+
 sub build_chain {
     my $self = shift;
     use Data::Dumper;
@@ -26,9 +30,7 @@ sub build_chain {
     );
 }
 
-use Log::Stash::CLIComponent (name => 'input');
-use Log::Stash::CLIComponent (name => 'output');
-use Log::Stash::CLIComponent (name => 'filter', default => 'Null');
+with 'Log::Stash::Role::Script';
 
 1;
 
