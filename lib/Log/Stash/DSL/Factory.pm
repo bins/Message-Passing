@@ -1,22 +1,22 @@
 package Log::Stash::DSL::Factory;
-use Moose;
-use namespace::autoclean;
-
+use Moo;
 use Log::Stash::Utils qw/ expand_class_name /;
+use MooX::Types::MooseLike::Base qw/ HashRef /;
+use Module::Runtime ();
+use Scalar::Util qw/ blessed /;
+use namespace::clean -except => 'meta';
 
 has registry => (
-    isa => 'HashRef',
+    is => 'ro',
+    isa => HashRef,
     default => sub { {} },
-    traits => ['Hash'],
-    handles => {
-        registry_get => 'get',
-        registry_has => 'get',
-        registry_set => 'set',
-        registry => 'elements',
-    },
     lazy => 1,
     clearer => 'clear_registry',
 );
+
+sub registry_get { $_[0]->registry->{$_[1]} }
+sub registry_has { exists($_[0]->registry->{$_[1]}) }
+sub registry_set { $_[0]->registry->{$_[1]} = $_[2] }
 
 sub make {
     my ($self, %opts) = @_;
@@ -50,13 +50,12 @@ sub make {
         }
     }
     $class = expand_class_name($type, $class);
-    Class::MOP::load_class($class);
+    Module::Runtime::use_module($class);
     my $out = $class->new(%opts);
     $self->registry_set($name, $out);
     return $out;
 }
 
-__PACKAGE__->meta->make_immutable;
 1;
 
 =head1 NAME

@@ -21,7 +21,7 @@ sub log_chain (&) {
     }
     local $FACTORY = Log::Stash::DSL::Factory->new;
     $code->();
-    my %items = $FACTORY->registry;
+    my %items = %{ $FACTORY->registry };
     $FACTORY->clear_registry;
     weaken($items{$_}) for
         grep { $items{$_}->can('consume') }
